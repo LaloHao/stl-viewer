@@ -1,0 +1,13 @@
+* stl-viewer
+
+** Prerequisites
+Install nix on any distribution:
+
+#+BEGIN_SRC sh
+sh <(curl -L https://nixos.org/nix/install) --daemon
+#+END_SRC
+** Try it out
+Try it out:
+#+BEGIN_SRC sh
+$(nix-build --no-out-link)/bin/stl-viewer
+#+END_SRC

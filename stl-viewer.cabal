@@ -1,0 +1,21 @@
+cabal-version:       >=1.10
+name:                stl-viewer
+version:             0.1.0.0
+synopsis:            Primitive STL file viewer using SDL.
+description:
+  An (arguably) simple and primitive STL file viewer implemented using SDL as
+  backend.
+license:             MIT
+author:              Eduardo V.
+maintainer:          lalohao@gmail.com
+copyright:           Eduardo V.
+category:            graphics
+build-type:          Simple
+extra-source-files:  CHANGELOG.md
+
+executable stl-viewer
+  main-is:             Main.hs
+  build-depends:       base >=4.13 && <4.14
+                     , sdl2
+  ghc-options:         -Wall -rtsopts -threaded
+  default-language:    Haskell2010
