@@ -1,14 +1,15 @@
 module STL (
-    V2(..),
-    V4(..),
     ($=),
     sleep,
     opaque,
     transparent,
     drawTriangle,
+    color3f,
+    vertex3f,
   ) where
 
 import SDL (Renderer, V2(..), V4(..), ($=))
+import Graphics.Rendering.OpenGL
 import qualified SDL
 import GHC.Word
 import Foreign.C.Types
@@ -26,13 +27,15 @@ opaque = 255
 sleep :: Int -> IO ()
 sleep = threadDelay . (*1000000)
 
--- An alias for a 2 dimension vector
-type Point = V2 CInt
+color3f r g b = color $ Color3 r g (b :: GLfloat)
+vertex3f r g b = vertex $ Vertex3 r g (b :: GLfloat)
 
 -- Draw a triangle using vertex p, q and r.
 -- Lines are drawn from p->q->r->p (p to q, then q to r, finally closing r to p)
-drawTriangle :: Renderer -> Point -> Point -> Point -> IO ()
-drawTriangle renderer p q r = do
-  SDL.drawLine renderer (SDL.P p) (SDL.P q)
-  SDL.drawLine renderer (SDL.P q) (SDL.P r)
-  SDL.drawLine renderer (SDL.P r) (SDL.P p)
+-- drawTriangle :: Renderer -> Color3 GLfloat -> Vertex3 GLfloat -> Vertex3 GLfloat -> Vertex3 GLfloat -> IO ()
+drawTriangle color v₀ v₁ v₂
+  = renderPrimitive Triangles $ do
+      color
+      v₀
+      v₁
+      v₂

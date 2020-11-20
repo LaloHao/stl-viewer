@@ -33,6 +33,8 @@ library
 
 executable stl-viewer-app
   build-depends: base, stl-viewer
+               , OpenGL
+               , GLUT
                , sdl2
                , sdl2-gfx
   main-is:
