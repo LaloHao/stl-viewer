@@ -1,13 +1,48 @@
 * stl-viewer
 
 ** Prerequisites
-Install nix on any distribution:
-
++ direnv
++ nix
+*** Installing nix
+On any distribution:
 #+BEGIN_SRC sh
 sh <(curl -L https://nixos.org/nix/install) --daemon
 #+END_SRC
 ** Try it out
-Try it out:
+Set up packages:
+#+NAME: setup
 #+BEGIN_SRC sh
-$(nix-build --no-out-link)/bin/stl-viewer
+direnv allow
 #+END_SRC
+
+Run viewer
+#+NAME: run-viewer
+#+BEGIN_SRC sh
+cabal run stl-viewer-app example/cube.stl
+#+END_SRC
+
+Run parser
+#+NAME: run-parser
+#+BEGIN_SRC sh :exports both :results raw :wrap SRC haskell
+cabal run stl-parser-app example/block.stl
+#+END_SRC
+
+#+RESULTS: run-parser
+#+begin_SRC haskell
+Up to date
+Solid name: block100
+Facets: 12
+Facet (Normal [-1.0,0.0,0.0]) (Vertices [0.0,100.0,100.0,0.0,100.0,0.0,0.0,0.0,100.0])
+Facet (Normal [-1.0,0.0,0.0]) (Vertices [0.0,0.0,100.0,0.0,100.0,0.0,0.0,0.0,0.0])
+Facet (Normal [0.0,0.0,1.0]) (Vertices [100.0,100.0,100.0,0.0,100.0,100.0,100.0,0.0,100.0])
+Facet (Normal [0.0,0.0,1.0]) (Vertices [100.0,0.0,100.0,0.0,100.0,100.0,0.0,0.0,100.0])
+Facet (Normal [1.0,0.0,0.0]) (Vertices [100.0,100.0,0.0,100.0,100.0,100.0,100.0,0.0,0.0])
+Facet (Normal [1.0,0.0,0.0]) (Vertices [100.0,0.0,0.0,100.0,100.0,100.0,100.0,0.0,100.0])
+Facet (Normal [0.0,0.0,-1.0]) (Vertices [0.0,100.0,0.0,100.0,100.0,0.0,0.0,0.0,0.0])
+Facet (Normal [0.0,0.0,-1.0]) (Vertices [0.0,0.0,0.0,100.0,100.0,0.0,100.0,0.0,0.0])
+Facet (Normal [0.0,1.0,0.0]) (Vertices [100.0,100.0,100.0,100.0,100.0,0.0,0.0,100.0,100.0])
+Facet (Normal [0.0,1.0,0.0]) (Vertices [0.0,100.0,100.0,100.0,100.0,0.0,0.0,100.0,0.0])
+Facet (Normal [0.0,-1.0,0.0]) (Vertices [100.0,0.0,0.0,100.0,0.0,100.0,0.0,0.0,0.0])
+Facet (Normal [0.0,-1.0,0.0]) (Vertices [0.0,0.0,0.0,100.0,0.0,100.0,0.0,0.0,100.0])
+
+#+end_SRC

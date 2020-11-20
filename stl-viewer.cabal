@@ -24,21 +24,36 @@ library
   hs-source-dirs: src/
   exposed-modules:
     STL
+    STL.Parser
   build-depends: base >=4.13 && <4.14
                , sdl2
                , sdl2-gfx
                , vector
                , OpenGL
                , bytestring
+               , OpenGLRaw
+               , parsec
+               , parsec3-numbers
 
 executable stl-viewer-app
-  build-depends: base, stl-viewer
+  build-depends: base
+               , stl-viewer
                , OpenGL
+               , random
                , GLUT
                , sdl2
                , sdl2-gfx
   main-is:
    Main.hs
+  hs-source-dirs:
+   app
+  ghc-options:
+   -Wall -rtsopts -threaded
+
+executable stl-parser-app
+  build-depends: base, stl-viewer
+  main-is:
+   Parser.hs
   hs-source-dirs:
    app
   ghc-options:
