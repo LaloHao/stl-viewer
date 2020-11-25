@@ -1,0 +1,59 @@
+cabal-version:       2.20
+name:                stl
+version:             0.1.0.0
+synopsis:            Primitive STL file viewer using SDL.
+description:
+  An (arguably) simple and primitive STL file viewer implemented using SDL as
+  backend.
+license:             MIT
+author:              Eduardo V.
+maintainer:          lalohao@gmail.com
+copyright:           Eduardo V.
+category:            graphics
+build-type:          Simple
+extra-source-files:  CHANGELOG.md
+
+common shared-properties
+  default-language: Haskell2010
+  build-depends: base >=4.13 && <4.14
+               , vector
+               , OpenGL
+               , bytestring
+               , OpenGLRaw
+               , GLUT
+  ghc-options:
+   -Wall
+
+library stl-lib
+  import: shared-properties
+  hs-source-dirs: src/
+  exposed-modules:
+    STL
+    STL.Parser
+  build-depends: 
+                 parsec
+               , parsec3-numbers
+               , accelerate
+               , accelerate-llvm
+               , accelerate-llvm-native
+
+executable stl-viewer
+  import: shared-properties
+  hs-source-dirs: app/
+  build-depends: stl-lib
+               , random
+               , JuicyPixels
+               , lens
+  main-is: Main.hs
+  other-modules: Options
+  ghc-options:
+   -rtsopts -threaded
+
+executable stl-parser
+  buildable: false
+  import: shared-properties
+  hs-source-dirs: app/
+  build-depends: stl-lib
+  main-is: Parser.hs
+  ghc-options:
+   -rtsopts -threaded

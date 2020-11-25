@@ -1,41 +1,23 @@
-module STL (
-    ($=),
-    sleep,
-    opaque,
-    transparent,
-    drawTriangle,
-    color3f,
-    vertex3f,
-  ) where
+module STL where
 
-import SDL (Renderer, V2(..), V4(..), ($=))
-import Graphics.Rendering.OpenGL
-import qualified SDL
-import GHC.Word
-import Foreign.C.Types
-import Control.Concurrent
+import Graphics.Rendering.OpenGL hiding (Vertex, Color)
 
--- SDL_ALPHA_TRANSPARENT
-transparent :: Word8
-transparent = 0
-
--- SDL_ALPHA_OPAQUE
-opaque :: Word8
-opaque = 255
-
--- sleeps for a determined amount of seconds
-sleep :: Int -> IO ()
-sleep = threadDelay . (*1000000)
-
+normal3f, vertex3f, color3f :: GLfloat -> GLfloat -> GLfloat -> IO ()
+normal3f x y z = normal $ Normal3 x y (z :: GLfloat)
 color3f r g b = color $ Color3 r g (b :: GLfloat)
-vertex3f r g b = vertex $ Vertex3 r g (b :: GLfloat)
+vertex3f x y z = vertex $ Vertex3 x y (z :: GLfloat)
 
--- Draw a triangle using vertex p, q and r.
--- Lines are drawn from p->q->r->p (p to q, then q to r, finally closing r to p)
--- drawTriangle :: Renderer -> Color3 GLfloat -> Vertex3 GLfloat -> Vertex3 GLfloat -> Vertex3 GLfloat -> IO ()
-drawTriangle color v₀ v₁ v₂
+-- type Vertex = IO GLfloat
+-- type Color  = IO GLfloat
+type Vertex = IO ()
+type Color  = IO ()
+
+-- drawTriangle :: Color -> Vertex -> Vertex -> Vertex -> IO ()
+-- drawTriangle color v₀ v₁ v₂
+drawTriangle :: Vertex -> Vertex -> Vertex -> IO ()
+drawTriangle v₀ v₁ v₂
   = renderPrimitive Triangles $ do
-      color
       v₀
       v₁
       v₂
+      return ()

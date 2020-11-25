@@ -46,3 +46,122 @@ Facet (Normal [0.0,-1.0,0.0]) (Vertices [100.0,0.0,0.0,100.0,0.0,100.0,0.0,0.0,0
 Facet (Normal [0.0,-1.0,0.0]) (Vertices [0.0,0.0,0.0,100.0,0.0,100.0,0.0,0.0,100.0])
 
 #+end_SRC
+** Dumping/Output n image frames
+You might want to create an output directory, since a file is saved per frame,
+defalt output directory is called =output=
+#+BEGIN_SRC sh
+mkdir output
+#+END_SRC
+
+You can then specify frame number output options, and render a gif or a video
+#+NAME: stl-output-frames
+#+BEGIN_SRC sh  :exports both :results raw :wrap SRC sh
+./result/bin/stl-viewer example/block.stl --scale=300 --frames=30
+#+END_SRC
+
+#+RESULTS: stl-output-frames
+#+begin_SRC sh
+Rendering with initial geometry w=500, h=500
+Writing output/stl-000.png
+Writing output/stl-001.png
+Writing output/stl-002.png
+Writing output/stl-003.png
+Writing output/stl-004.png
+Writing output/stl-005.png
+Writing output/stl-006.png
+Writing output/stl-007.png
+Writing output/stl-008.png
+Writing output/stl-009.png
+Writing output/stl-010.png
+Writing output/stl-011.png
+Writing output/stl-012.png
+Writing output/stl-013.png
+Writing output/stl-014.png
+Writing output/stl-015.png
+Writing output/stl-016.png
+Writing output/stl-017.png
+Writing output/stl-018.png
+Writing output/stl-019.png
+Writing output/stl-020.png
+Writing output/stl-021.png
+Writing output/stl-022.png
+Writing output/stl-023.png
+Writing output/stl-024.png
+Writing output/stl-025.png
+Writing output/stl-026.png
+Writing output/stl-027.png
+Writing output/stl-028.png
+Writing output/stl-029.png
+Done
+#+end_SRC
+
+Default settings for output are:
+#+BEGIN_SRC sh
+--output=output --format=stl-%03d.png --frames=N
+#+END_SRC
+
+Output first 300 frames of [[file:example/bottle.stl]] to =output/bottle-XXX.png=
+#+NAME: stl-output-frames-bottle
+#+BEGIN_SRC sh :exports both :results raw :wrap SRC sh
+./result/bin/stl-viewer example/block.stl --scale=300 --frames=30 -f "bottle-%03d.png"
+#+END_SRC
+
+#+RESULTS: stl-output-frames-bottle
+#+begin_SRC sh
+#+end_SRC
+
+#+RESULTS:
+
+** Rendering a GIF or Video
+After [[*Dumping/Output n image frames][Dumping/Output n image frames]], if you have =ffmpeg= installed, you can
+create a video, or a gif animation with the following command:
+
+#+NAME: stl-render-animation
+#+BEGIN_SRC sh :exports both :results raw :wrap SRC sh
+ffmpeg -i output/stl-%03d.png stl.gif -y 2>&1
+#+END_SRC
+
+#+RESULTS: stl-render-animation
+#+begin_SRC sh
+ffmpeg version 4.3.1 Copyright (c) 2000-2020 the FFmpeg developers
+  built with gcc 9.3.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/wgxks7bfx1pihskrvmxwr5ply83rsq85-ffmpeg-4.3.1 --arch=x86_64 --target_os=linux --enable-gpl --enable-version3 --enable-shared --enable-pic --enable-runtime-cpudetect --enable-hardcoded-tables --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --enable-ffmpeg --disable-ffplay --enable-ffprobe --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avresample --enable-avutil --enable-postproc --enable-swresample --enable-swscale --disable-doc --enable-libass --enable-bzlib --enable-gnutls --enable-fontconfig --enable-libfreetype --enable-libmp3lame --enable-iconv --enable-libtheora --enable-libssh --enable-vaapi --enable-libdrm --enable-vdpau --enable-libvorbis --enable-libvpx --enable-lzma --disable-opengl --disable-libmfx --disable-libaom --enable-libpulse --enable-sdl2 --enable-libsoxr --enable-libx264 --enable-libxvid --enable-zlib --enable-libopus --enable-libspeex --enable-libx265 --enable-libdav1d --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      56. 51.100 / 56. 51.100
+  libavcodec     58. 91.100 / 58. 91.100
+  libavformat    58. 45.100 / 58. 45.100
+  libavdevice    58. 10.100 / 58. 10.100
+  libavfilter     7. 85.100 /  7. 85.100
+  libavresample   4.  0.  0 /  4.  0.  0
+  libswscale      5.  7.100 /  5.  7.100
+  libswresample   3.  7.100 /  3.  7.100
+  libpostproc    55.  7.100 / 55.  7.100
+Input #0, image2, from 'output/stl-%03d.png':
+  Duration: 00:00:01.20, start: 0.000000, bitrate: N/A
+    Stream #0:0: Video: png, rgba(pc), 494x494, 25 fps, 25 tbr, 25 tbn, 25 tbc
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> gif (native))
+Press [q] to stop, [?] for help
+Output #0, gif, to 'stl.gif':
+  Metadata:
+    encoder         : Lavf58.45.100
+    Stream #0:0: Video: gif, bgr8, 494x494, q=2-31, 200 kb/s, 25 fps, 100 tbn, 25 tbc
+    Metadata:
+      encoder         : Lavc58.91.100 gif
+frame=   30 fps=0.0 q=-0.0 Lsize=      66kB time=00:00:01.17 bitrate= 460.6kbits/s speed=7.88x
+video:66kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.029698%
+#+end_SRC
+
+[[file:stl.gif]]
+
+#+NAME: stl-render-video
+#+BEGIN_SRC sh :exports both :results raw :wrap SRC sh
+ffmpeg -i output/stl-%03d.png -map_metadata 0:g -vf "vflip" -c:v libx264 -pix_fmt yuv420p bottle.mp4 -y 2>&1
+#+END_SRC
+
+#+RESULTS: stl-render-video
+#+begin_SRC sh
+#+end_SRC
+
+[[file:bottle.mp4]]
+
+[[file:bottle.gif]]

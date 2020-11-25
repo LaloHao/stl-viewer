@@ -1,3 +1,4 @@
+module Main where
 import STL.Parser
 import System.Environment
 
@@ -6,7 +7,7 @@ main = do
   [file] <- getArgs
   p <- stlParseFromFile file
   case p of
-    Left  error  -> putStrLn $ show error
+    Left  err  -> putStrLn $ show err
     Right (Solid name facets) -> do
      putStrLn $ "Solid name: " ++ name
      putStrLn $ "Facets: " ++ (show $ length facets)
